@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "fichier.h"
 
-// Affiche le contenu d'un fichier à l'écran
+// Affiche le contenu d'un fichier à l'écran.
 void lire_fichier(char *nom_de_fichier) {
     FILE *f = fopen(nom_de_fichier, "r");
     if (f == NULL) {
@@ -31,3 +31,4 @@ void ecrire_dans_fichier(char *nom_de_fichier, char *message) {
     fclose(f);
     printf("Le message a ete ecrit dans le fichier %s.\n", nom_de_fichier);
 }
+
