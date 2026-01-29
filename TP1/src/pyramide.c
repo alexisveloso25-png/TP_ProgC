@@ -2,7 +2,7 @@
 
 int main() {
     // Déclaration et initialisation
-    int n = 5; 
+    int n = 10; 
     int i, j;
 
     printf("--- Génération de la pyramide (hauteur : %d) ---\n\n", n);
