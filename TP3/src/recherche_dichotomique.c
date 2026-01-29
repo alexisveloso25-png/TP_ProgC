@@ -7,16 +7,17 @@ int main() {
     int n = 100;
     int cible, i, j, temp;
     int gauche, droite, milieu;
-    int trouve = 0;
+    int indice_trouve = -1;
+    int compteur = 0;
 
     srand(time(NULL));
 
-    // 1. Génération et Tri (nécessaire pour la recherche dichotomique)
+    // 1. Génération de valeurs (Plage réduite à 50 pour avoir plus de doublons)
     for (i = 0; i < n; i++) {
-        tableau[i] = (rand() % 200) - 50; // Valeurs entre -50 et 149
+        tableau[i] = (rand() % 51) - 10; // Valeurs entre -10 et 40
     }
 
-    // Tri à bulles pour garantir l'ordre croissant
+    // 2. Tri à bulles
     for (i = 0; i < n - 1; i++) {
         for (j = 0; j < n - i - 1; j++) {
             if (tableau[j] > tableau[j + 1]) {
@@ -27,48 +28,50 @@ int main() {
         }
     }
 
-    // 2. Affichage du tableau trié
-    printf("--- Recherche de scores (Alexis, Salmane, Kais, Mohamed) ---\n");
+    // 3. Affichage
+    printf("--- Recherche Groupée (Alexis, Salmane, Kais, Mohamed) ---\n");
     printf("Tableau trie :\n");
     for (i = 0; i < n; i++) {
         printf("%d ", tableau[i]);
     }
     printf("\n\n");
 
-    // 3. Entrée utilisateur
+    // 4. Saisie
     printf("Entrez l'entier que vous souhaitez chercher : ");
-    if (scanf("%d", &cible) != 1) {
-        printf("Entree invalide.\n");
-        return 1;
-    }
+    fflush(stdout);
+    scanf("%d", &cible);
 
-    // 4. Algorithme de RECHERCHE DICHOTOMIQUE
+    // 5. Recherche dichotomique pour trouver UN indice
     gauche = 0;
     droite = n - 1;
-
     while (gauche <= droite) {
         milieu = gauche + (droite - gauche) / 2;
-
-        // Si la cible est au milieu
         if (tableau[milieu] == cible) {
-            trouve = 1;
+            indice_trouve = milieu;
             break;
         }
-        // Si la cible est plus grande, on ignore la moitié gauche
-        if (tableau[milieu] < cible) {
-            gauche = milieu + 1;
-        }
-        // Si la cible est plus petite, on ignore la moitié droite
-        else {
-            droite = milieu - 1;
-        }
+        if (tableau[milieu] < cible) gauche = milieu + 1;
+        else droite = milieu - 1;
     }
 
-    // 5. Résultat
-    if (trouve) {
-        printf("Resultat : entier present\n");
+    // 6. Si trouvé, on compte les répétitions autour de l'indice
+    if (indice_trouve != -1) {
+        compteur = 1;
+        // Regarder à gauche
+        int k = indice_trouve - 1;
+        while (k >= 0 && tableau[k] == cible) {
+            compteur++;
+            k--;
+        }
+        // Regarder à droite
+        k = indice_trouve + 1;
+        while (k < n && tableau[k] == cible) {
+            compteur++;
+            k++;
+        }
+        printf("\nResultat : L'entier %d est present %d fois.\n", cible, compteur);
     } else {
-        printf("Resultat : entier absent\n");
+        printf("\nResultat : entier absent.\n");
     }
 
     return 0;
