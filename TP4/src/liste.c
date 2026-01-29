@@ -1,13 +1,16 @@
 #include <stdio.h>
-#include "fichier.h"
-void lire_fichier(char *nom) {
-    FILE *f = fopen(nom, "r");
-    if (!f) { printf("\x1B[31mErreur: Impossible d'ouvrir le fichier '%s'\x1B[0m\n", nom); return; }
-    char c;
-    while ((c = fgetc(f)) != EOF) putchar(c);
-    fclose(f);
+#include <stdlib.h>
+#include "liste.h"
+void init_liste(struct liste_couleurs *l) { l->premier = NULL; }
+void insertion(struct couleur *c, struct liste_couleurs *l) {
+    struct noeud *n = malloc(sizeof(struct noeud));
+    n->data = *c; n->suivant = l->premier; l->premier = n;
 }
-void ecrire_dans_fichier(char *nom, char *msg) {
-    FILE *f = fopen(nom, "a");
-    if (f) { fprintf(f, "%s", msg); fclose(f); }
+void parcours(struct liste_couleurs *l) {
+    struct noeud *act = l->premier;
+    int rang = 1;
+    while (act) {
+        printf("Couleur n°%d -> R:%d G:%d B:%d A:%d\n", rang++, act->data.r, act->data.g, act->data.b, act->data.a);
+        act = act->suivant;
+    }
 }
