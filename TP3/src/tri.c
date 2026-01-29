@@ -9,35 +9,24 @@ int main() {
 
     srand(time(NULL));
 
-    // 1. Remplissage aléatoire
+    // 1. Remplissage aléatoire entre -100 et 100
     for (i = 0; i < n; i++) {
         tableau[i] = (rand() % 201) - 100; 
     }
 
-    printf("--- Système de classement (Alexis, Salmane, Kais, Mohamed) ---\n\n");
+    printf("--- SYSTEME DE CLASSEMENT (Alexis, Salmane, Kais, Mohamed) ---\n\n");
 
-    // 2. TRI CROISSANT (Petit -> Grand)
-    for (i = 0; i < n - 1; i++) {
-        for (j = 0; j < n - i - 1; j++) {
-            if (tableau[j] > tableau[j + 1]) { // Signe '>' pour croissant
-                temp = tableau[j];
-                tableau[j] = tableau[j + 1];
-                tableau[j + 1] = temp;
-            }
-        }
-    }
-
-    printf("Tableau trie par ordre CROISSANT :\n");
+    // 2. AFFICHAGE DU TABLEAU DE BASE (NON TRIÉ)
+    printf("TABLEAU DE BASE (Valeurs generees) :\n");
     for (i = 0; i < n; i++) {
         printf("%d ", tableau[i]);
     }
-    printf("\n\n");
+    printf("\n\n------------------------------------------------------------\n\n");
 
-    // 3. TRI DÉCROISSANT (Grand -> Petit)
-    // On reprend le tableau déjà trié et on ré-applique l'algorithme inverse
+    // 3. TRI CROISSANT (Petit -> Grand)
     for (i = 0; i < n - 1; i++) {
         for (j = 0; j < n - i - 1; j++) {
-            if (tableau[j] < tableau[j + 1]) { // Signe '<' pour décroissant
+            if (tableau[j] > tableau[j + 1]) {
                 temp = tableau[j];
                 tableau[j] = tableau[j + 1];
                 tableau[j + 1] = temp;
@@ -45,7 +34,24 @@ int main() {
         }
     }
 
-    printf("Tableau trie par ordre DECROISSANT :\n");
+    printf("TABLEAU TRIE PAR ORDRE CROISSANT :\n");
+    for (i = 0; i < n; i++) {
+        printf("%d ", tableau[i]);
+    }
+    printf("\n\n------------------------------------------------------------\n\n");
+
+    // 4. TRI DÉCROISSANT (Grand -> Petit)
+    for (i = 0; i < n - 1; i++) {
+        for (j = 0; j < n - i - 1; j++) {
+            if (tableau[j] < tableau[j + 1]) {
+                temp = tableau[j];
+                tableau[j] = tableau[j + 1];
+                tableau[j + 1] = temp;
+            }
+        }
+    }
+
+    printf("TABLEAU TRIE PAR ORDRE DECROISSANT :\n");
     for (i = 0; i < n; i++) {
         printf("%d ", tableau[i]);
     }
