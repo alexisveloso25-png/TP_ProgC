@@ -17,34 +17,35 @@ int main() {
         "Le projet ProgC avance tres bien."
     };
 
-    srand(time(NULL)); // Initialisation de l'aleatoire
+    srand(time(NULL));
 
-    // 2. Choix dynamique de la cible
+    // 2. Affichage de toutes les phrases (le "Tableau de base")
+    printf("--- LISTE DES PHRASES DISPONIBLES ---\n");
+    for (int i = 0; i < 10; i++) {
+        printf("[%d] %s\n", i, phrases[i]);
+    }
+    printf("-------------------------------------\n\n");
+
+    // 3. Choix dynamique de la cible
     char *cible;
-    int mode = rand() % 2; // 0 ou 1
-
-    if (mode == 0) {
-        // On choisit une phrase qui existe au hasard dans le tableau
-        int index_aleatoire = rand() % 10;
-        cible = phrases[index_aleatoire];
+    if (rand() % 2 == 0) {
+        // Cas : La phrase existe
+        cible = phrases[rand() % 10];
     } else {
-        // On choisit une phrase qui n'existe pas
-        cible = "L'ordinateur de Kais a plante.";
+        // Cas : La phrase est fausse
+        cible = "L'ordinateur de Kais est en surchauffe.";
     }
 
-    printf("--- Test de recherche dynamique ---\n");
-    printf("Phrase recherchee : \"%s\"\n\n", cible);
+    printf("RECHERCHE DE : \"%s\"\n", cible);
 
+    // 4. Logique de recherche manuelle
     int phrase_trouvee = 0;
-
-    // 3. Boucle de recherche à travers le tableau
     for (int i = 0; i < 10; i++) {
         char *phrase_actuelle = phrases[i];
         int j = 0;
         int identique = 1;
 
-        // Comparaison manuelle caractere par caractere
-        // On continue tant que l'une des deux n'est pas terminee par '\0'
+        // Comparaison caractere par caractere sans strcmp
         while (phrase_actuelle[j] != '\0' || cible[j] != '\0') {
             if (phrase_actuelle[j] != cible[j]) {
                 identique = 0;
@@ -59,11 +60,11 @@ int main() {
         }
     }
 
-    // 4. Affichage du resultat
+    // 5. Affichage du résultat final
     if (phrase_trouvee) {
-        printf("Resultat : Phrase trouvee\n");
+        printf("\nRESULTAT : Phrase trouvee !\n");
     } else {
-        printf("Resultat : Phrase non trouvee\n");
+        printf("\nRESULTAT : Phrase non trouvee.\n");
     }
 
     return 0;
