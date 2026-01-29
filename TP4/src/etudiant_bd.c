@@ -3,7 +3,7 @@
 #include <string.h>
 #include "fichier.h"
 
-// Structure pour regrouper les informations d'un etudiant
+// Structure pour regrouper les informations d'un etudiant.
 typedef struct {
     char nom[50];
     char prenom[50];
@@ -56,3 +56,4 @@ void exercice_4_7() {
 
     printf("\nLes details des etudiants ont ete enregistres dans le fichier etudiant.txt.\n");
 }
+
