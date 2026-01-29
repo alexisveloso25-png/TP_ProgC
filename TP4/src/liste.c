@@ -1,34 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "fichier.h"
+#include "liste.h"
 
-// Affiche le contenu d'un fichier à l'écran
-void lire_fichier(char *nom_de_fichier) {
-    FILE *f = fopen(nom_de_fichier, "r");
-    if (f == NULL) {
-        printf("Erreur : Impossible d'ouvrir le fichier %s.\n", nom_de_fichier);
-        return;
-    }
-
-    printf("Contenu du fichier %s :\n", nom_de_fichier);
-    char c;
-    while ((c = fgetc(f)) != EOF) {
-        putchar(c);
-    }
-    printf("\n");
-    fclose(f);
+void init_liste(struct liste_couleurs *l) {
+    l->premier = NULL;
 }
 
-// Enregistre un message dans un fichier
-void ecrire_dans_fichier(char *nom_de_fichier, char *message) {
-    FILE *f = fopen(nom_de_fichier, "w"); // "w" pour écraser ou créer
-    if (f == NULL) {
-        printf("Erreur : Impossible de creer le fichier %s.\n", nom_de_fichier);
-        return;
-    }
+void insertion(struct couleur *c, struct liste_couleurs *l) {
+    struct noeud *nouveau = malloc(sizeof(struct noeud));
+    if (nouveau == NULL) return;
 
-    fprintf(f, "%s", message);
-    fclose(f);
-    printf("Le message a ete ecrit dans le fichier %s.\n", nom_de_fichier);
+    nouveau->data = *c;
+    nouveau->suivant = l->premier; // On insère au début
+    l->premier = nouveau;
 }
 
+void parcours(struct liste_couleurs *l) {
+    struct noeud *actuel = l->premier;
+    int i = 1;
+    while (actuel != NULL) {
+        printf("Couleur %d : R=0x%02X, G=0x%02X, B=0x%02X, A=0x%02X\n", 
+                i++, actuel->data.r, actuel->data.g, actuel->data.b, actuel->data.a);
+        actuel = actuel->suivant;
+    }
+}
