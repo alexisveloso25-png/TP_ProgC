@@ -2,8 +2,8 @@
 
 int main() {
     // 1. Initialisation des chaînes
-    char chaine1[50] = "Hello";
-    char chaine2[] = " World!";
+    char chaine1[50] = "Bonjour";
+    char chaine2[] = " CNAM!";
     char copie[50];
     char concat[100];
 
@@ -47,3 +47,4 @@ int main() {
 
     return 0;
 }
+
