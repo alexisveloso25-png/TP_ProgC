@@ -1,23 +1,25 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "fichier.h"
 
-// Définition de la structure Etudiant
+// Structure pour regrouper les informations d'un etudiant
 typedef struct {
     char nom[50];
     char prenom[50];
     char adresse[100];
-    float note1;
-    float note2;
+    int note1;
+    int note2;
 } Etudiant;
 
-void gerer_base_etudiants() {
+void exercice_4_7() {
+    // 1. Creation d'un tableau de structures de taille 5
     Etudiant promo[5];
-    char ligne[300];
-    char nom_fichier[] = "etudiant.txt";
+    char buffer[500];
 
-    printf("\n=== SAISIE DE LA BASE DE DONNEES ETUDIANTE ===\n");
+    printf("\n--- Exercice 4.7 : Gestion de la base de donnees etudiante ---\n");
 
+    // 2. Boucle for pour la saisie des 5 etudiants
     for (int i = 0; i < 5; i++) {
         printf("\nEntrez les details de l'etudiant.e %d :\n", i + 1);
         
@@ -28,28 +30,29 @@ void gerer_base_etudiants() {
         scanf("%s", promo[i].prenom);
         
         printf("Adresse : "); fflush(stdout);
-        getchar(); // Nettoie le buffer avant le fgets
+        getchar(); // Nettoyage indispensable pour fgets
         fgets(promo[i].adresse, sizeof(promo[i].adresse), stdin);
-        promo[i].adresse[strcspn(promo[i].adresse, "\n")] = 0; // Enlever le \n
+        promo[i].adresse[strcspn(promo[i].adresse, "\n")] = 0; // Enlever le retour ligne
 
         printf("Note 1 : "); fflush(stdout);
-        scanf("%f", &promo[i].note1);
+        scanf("%d", &promo[i].note1);
         
         printf("Note 2 : "); fflush(stdout);
-        scanf("%f", &promo[i].note2);
+        scanf("%d", &promo[i].note2);
 
-        // Formatage de la ligne pour le fichier
-        sprintf(ligne, "Etudiant %d : %s %s, Adresse : %s, Notes : %.2f, %.2f\n", 
-                i + 1, promo[i].nom, promo[i].prenom, promo[i].adresse, promo[i].note1, promo[i].note2);
+        // 3. Formatage des details pour le fichier
+        // Chaque etudiant occupe une ligne distincte
+        sprintf(buffer, "Nom: %s | Prenom: %s | Adresse: %s | Notes: %d, %d\n", 
+                promo[i].nom, promo[i].prenom, promo[i].adresse, promo[i].note1, promo[i].note2);
         
-        // On utilise ta fonction ecrire_dans_fichier
-        // Note : pour ajouter sans écraser, il faudrait modifier fichier.c avec "a" au lieu de "w"
-        // Ici on écrit chaque étudiant (pour cet exo, on peut concaténer ou écrire à la fin)
-        FILE *f = fopen(nom_fichier, (i == 0) ? "w" : "a"); 
+        // 4. Ecriture dans le fichier (on ajoute 'a' pour "append" si on veut tout garder, 
+        // ou on gere l'ouverture dans la boucle)
+        FILE *f = fopen("etudiant.txt", (i == 0) ? "w" : "a"); 
         if (f != NULL) {
-            fprintf(f, "%s", ligne);
+            fprintf(f, "%s", buffer);
             fclose(f);
         }
     }
-    printf("\nLes details des etudiants ont ete enregistres dans %s.\n", nom_fichier);
+
+    printf("\nLes details des etudiants ont ete enregistres dans le fichier etudiant.txt.\n");
 }
