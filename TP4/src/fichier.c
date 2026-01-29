@@ -1,14 +1,28 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "liste.h"
+#include "fichier.h"
 
-void exercice_4_7() {
-    struct liste_couleurs ma_liste;
-    init_liste(&ma_liste);
-    printf("\n--- GENERATION DE 10 COULEURS (EXO 4.7) ---\n");
-    for (int i = 0; i < 10; i++) {
-        struct couleur c = {(unsigned char)(i*25), (unsigned char)(255-i*15), (unsigned char)(i*10), 0xFF};
-        insertion(&c, &ma_liste);
+void lire_fichier(char *nom_de_fichier) {
+    FILE *f = fopen(nom_de_fichier, "r");
+    if (f == NULL) {
+        printf("Erreur : Impossible d'ouvrir le fichier %s\n", nom_de_fichier);
+        return;
     }
-    parcours(&ma_liste);
+    printf("Contenu de %s :\n", nom_de_fichier);
+    char c;
+    while ((c = fgetc(f)) != EOF) {
+        putchar(c);
+    }
+    printf("\n");
+    fclose(f);
+}
+
+void ecrire_dans_fichier(char *nom_de_fichier, char *message) {
+    FILE *f = fopen(nom_de_fichier, "a"); // 'a' pour ajouter sans ecraser
+    if (f == NULL) {
+        printf("Erreur d'ecriture.\n");
+        return;
+    }
+    fprintf(f, "%s", message);
+    fclose(f);
 }
