@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 int main() {
-    int n = 7; // Valeur fixe pour tester sans saisie clavier
+    int n = 10; // Valeur fixe pour tester sans saisie clavier
     long long u0 = 0;
     long long u1 = 1;
     long long suivant;
@@ -27,3 +27,4 @@ int main() {
 
     return 0;
 }
+
