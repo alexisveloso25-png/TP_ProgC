@@ -5,22 +5,16 @@
 #include "fichier.h"
 #include "liste.h"
 
-// --- PROTOTYPES (Déclarations uniquement) ---
-// On indique au compilateur que ces fonctions existent dans d'autres fichiers
-void exercice_4_1();
-void exercice_4_2();
-void exercice_4_3(); // Implémentée dans etudiant_bd.c
-int factorielle(int n); // Implémentée dans factorielle.c
-void exercice_4_6(char *nom); // Implémentée dans chercherfichier.c
-void exercice_4_7(); // Implémentée dans liste.c
-
-void afficher_titre(char *texte) {
-    printf("\n\x1B[36m>>> %s <<<\x1B[0m\n", texte);
-    printf("------------------------------------------\n");
-}
+// --- PROTOTYPES ---
+// On déclare les fonctions ici pour que le main puisse les appeler
+void exercice_4_1();           // Dans operator.c (ou fichier dédié)
+void exercice_4_2();           // Dans fichier.c
+void exercice_4_3();           // Dans etudiant_bd.c
+int factorielle(int n);        // Dans factorielle.c
+void exercice_4_6(char *nom);  // Dans chercherfichier.c
+void exercice_4_7();           // Dans liste.c
 
 int main(int argc, char *argv[]) {
-    // Mode recherche directe (Exo 4.6)
     if (argc == 2) {
         exercice_4_6(argv[1]);
         return 0;
@@ -28,24 +22,24 @@ int main(int argc, char *argv[]) {
 
     int choix;
     while (1) {
-        printf("\n\x1B[33m==============================================\n");
-        printf("       TP4 PROGC - MENU PRINCIPAL\n");
+        printf("\n\x1B[36m==============================================\n");
+        printf("   MENU TP4 - GROUPE MASTER (Visuel Corrigé)\n");
         printf("==============================================\x1B[0m\n");
-        printf("1. Calculatrice Interactive (4.1)\n");
-        printf("2. Gestion Fichiers Simple (4.2)\n");
-        printf("3. Base Etudiants (4.3)\n");
-        printf("5. Factorielle Recursive (4.5)\n");
-        printf("6. Recherche dans un Fichier (4.6)\n");
-        printf("7. Liste Couleurs RGB (4.7)\n");
+        printf("1. Calculatrice Interactive\n");
+        printf("2. Gestion Fichiers Simple\n");
+        printf("3. Base Donnees Etudiants\n");
+        printf("5. Factorielle Recursive\n");
+        printf("6. Recherche dans un Fichier\n");
+        printf("7. Liste Couleurs RGB\n");
         printf("0. Quitter\n");
-        printf("\nChoix : "); fflush(stdout);
+        printf("\n\x1B[33m> Choix : \x1B[0m"); fflush(stdout);
 
         if (scanf("%d", &choix) != 1 || choix == 0) break;
 
         switch (choix) {
             case 1: exercice_4_1(); break;
             case 2: exercice_4_2(); break;
-            case 3: exercice_4_3(); break; // Plus de conflit ici
+            case 3: exercice_4_3(); break;
             case 5: {
                 int n; printf("Nombre : "); scanf("%d", &n);
                 if(n >= 0) printf("Resultat : %d\n", factorielle(n));
@@ -59,7 +53,7 @@ int main(int argc, char *argv[]) {
             default: printf("Choix invalide.\n");
         }
         printf("\nAppuyez sur Entree pour continuer...");
-        getchar(); getchar();
+        getchar(); getchar(); 
     }
     return 0;
 }
