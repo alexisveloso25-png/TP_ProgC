@@ -1,41 +1,34 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 void exercice_4_6(char *nom_fichier) {
     FILE *f = fopen(nom_fichier, "r");
-    if (f == NULL) {
-        printf("Erreur : Impossible d'ouvrir le fichier %s\n", nom_fichier);
+    if (!f) {
+        printf("Fichier introuvable.\n");
         return;
     }
-
+    
     char phrase[100];
-    char ligne[1024];
+    char ligne[256];
     int num_ligne = 0;
 
-    printf("Entrez la phrase que vous souhaitez rechercher : ");
-    fflush(stdout);
-    getchar(); // Nettoie le buffer du scanf précédent
-    fgets(phrase, sizeof(phrase), stdin);
-    phrase[strcspn(phrase, "\n")] = 0; // Supprime le \n à la fin
+    printf("Entrez la phrase a rechercher : ");
+    getchar(); // vider buffer
+    fgets(phrase, 100, stdin);
+    phrase[strcspn(phrase, "\n")] = 0;
 
     printf("\nResultats de la recherche :\n");
-
     while (fgets(ligne, sizeof(ligne), f)) {
         num_ligne++;
-        int compteur = 0;
+        int count = 0;
         char *ptr = ligne;
-
-        // Recherche de toutes les occurrences de la phrase dans la ligne actuelle
         while ((ptr = strstr(ptr, phrase)) != NULL) {
-            compteur++;
-            ptr += strlen(phrase); // Avance le pointeur pour trouver la suivante
+            count++;
+            ptr += strlen(phrase);
         }
-
-        if (compteur > 0) {
-            printf("Ligne %d, %d fois\n", num_ligne, compteur);
+        if (count > 0) {
+            printf("Ligne %d, %d fois\n", num_ligne, count);
         }
     }
-
     fclose(f);
 }
