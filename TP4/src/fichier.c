@@ -1,33 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "fichier.h"
+#include "liste.h"
 
-// Affiche le contenu d'un fichier à l'écran
-void lire_fichier(char *nom_de_fichier) {
-    FILE *f = fopen(nom_de_fichier, "r");
-    if (f == NULL) {
-        printf("Erreur : Impossible d'ouvrir le fichier %s.\n", nom_de_fichier);
-        return;
+void exercice_4_7() {
+    struct liste_couleurs ma_liste;
+    init_liste(&ma_liste);
+    printf("\n--- GENERATION DE 10 COULEURS (EXO 4.7) ---\n");
+    for (int i = 0; i < 10; i++) {
+        struct couleur c = {(unsigned char)(i*25), (unsigned char)(255-i*15), (unsigned char)(i*10), 0xFF};
+        insertion(&c, &ma_liste);
     }
-
-    printf("Contenu du fichier %s :\n", nom_de_fichier);
-    char c;
-    while ((c = fgetc(f)) != EOF) {
-        putchar(c);
-    }
-    printf("\n");
-    fclose(f);
-}
-
-// Enregistre un message dans un fichier
-void ecrire_dans_fichier(char *nom_de_fichier, char *message) {
-    FILE *f = fopen(nom_de_fichier, "w"); // "w" pour écraser ou créer
-    if (f == NULL) {
-        printf("Erreur : Impossible de creer le fichier %s.\n", nom_de_fichier);
-        return;
-    }
-
-    fprintf(f, "%s", message);
-    fclose(f);
-    printf("Le message a ete ecrit dans le fichier %s.\n", nom_de_fichier);
+    parcours(&ma_liste);
 }
