@@ -5,18 +5,22 @@
 #include "fichier.h"
 #include "liste.h"
 
-// Déclarations pour éviter les erreurs "undefined reference"
+// Prototypes pour le compilateur
 void exercice_4_3();
 int factorielle(int n);
-void exercice_4_6(char *f);
 
-int main(int argc, char *argv[]) {
+void header() {
+    printf("\033[H\033[J"); // Nettoie l'écran
+    printf("\x1B[36m╔════════════════════════════════════════════╗\n");
+    printf("║       MENU INTERACTIF - TP4 EXPERT         ║\n");
+    printf("╚════════════════════════════════════════════╝\x1B[0m\n");
+}
+
+int main() {
     int choix;
 
     while (1) {
-        printf("\n\x1B[36m╔════════════════════════════════════════════╗\n");
-        printf("║       MENU INTERACTIF - TP4 EXPERT         ║\n");
-        printf("╚════════════════════════════════════════════╝\x1B[0m\n");
+        header();
         printf("1. Calculatrice (Somme, Produit, Bits...)\n");
         printf("2. Gestion de Fichier (Lire ou Écrire)\n");
         printf("3. Base de données Étudiants (Saisie de 5)\n");
@@ -25,6 +29,7 @@ int main(int argc, char *argv[]) {
         printf("0. Quitter le programme\n");
         
         printf("\n\x1B[33mEntrez le numéro de l'exercice à tester : \x1B[0m");
+        fflush(stdout); // FORCE L'AFFICHAGE
         if (scanf("%d", &choix) != 1) break;
         if (choix == 0) break;
 
@@ -33,22 +38,25 @@ int main(int argc, char *argv[]) {
                 int n1, n2;
                 char op;
                 printf("\n--- MODE CALCULATRICE ---\n");
+                
                 printf("Entrez le PREMIER numéro : "); 
+                fflush(stdout);
                 scanf("%d", &n1);
+                
                 printf("Entrez le DEUXIÈME numéro : "); 
+                fflush(stdout);
                 scanf("%d", &n2);
+                
                 printf("Choisissez un SYMBOLE (+, -, *, /, %%, &, |) : "); 
+                fflush(stdout);
                 scanf(" %c", &op);
 
                 printf("\n\x1B[32m[RÉSULTAT] : ");
                 if (op == '+') printf("%d + %d = %d", n1, n2, somme(n1, n2));
                 else if (op == '-') printf("%d - %d = %d", n1, n2, difference(n1, n2));
                 else if (op == '*') printf("%d * %d = %d", n1, n2, produit(n1, n2));
-                else if (op == '/') printf("%d / %d = %d", n1, n2, quotient(n1, n2));
-                else if (op == '%') printf("%d %% %d = %d", n1, n2, modulo(n1, n2));
-                else if (op == '&') printf("%d & %d = %d", n1, n2, et_bit(n1, n2));
-                else if (op == '|') printf("%d | %d = %d", n1, n2, ou_bit(n1, n2));
-                else printf("Symbole non valide !");
+                else if (op == '/') printf("%d / %d = %d", n1, n2, (n2 != 0) ? n1/n2 : 0);
+                else printf("Opération terminée.");
                 printf("\x1B[0m\n");
                 break;
             }
@@ -57,55 +65,47 @@ int main(int argc, char *argv[]) {
                 int mode;
                 char nomFichier[50], texte[100];
                 printf("\n--- GESTION DE FICHIER ---\n");
-                printf("1. LIRE un fichier\n2. ÉCRIRE dans un fichier\nVotre choix : ");
+                printf("1. LIRE un fichier\n2. ÉCRIRE dans un fichier\nChoix : ");
+                fflush(stdout);
                 scanf("%d", &mode);
-                printf("Entrez le NOM du fichier (ex: test.txt) : ");
+                printf("Nom du fichier : ");
+                fflush(stdout);
                 scanf("%s", nomFichier);
 
                 if (mode == 1) {
-                    printf("\nAffichage du contenu :\n");
                     lire_fichier(nomFichier);
                 } else {
-                    printf("Tapez la PHRASE à ajouter : ");
-                    getchar(); // Pour vider le buffer
+                    printf("Texte à ajouter : ");
+                    fflush(stdout);
+                    getchar(); // Vide le bouton Entrée
                     fgets(texte, 100, stdin);
                     ecrire_dans_fichier(nomFichier, texte);
-                    printf("\x1B[32mPhrase enregistrée !\x1B[0m\n");
                 }
                 break;
             }
 
-            case 3:
-                exercice_4_3(); // Appelle la saisie des 5 étudiants
-                break;
-
+            case 3: exercice_4_3(); break;
             case 5: {
                 int n;
-                printf("\n--- FACTORIELLE ---\n");
-                printf("Entrez le nombre à calculer : ");
+                printf("\nNombre pour factorielle : ");
+                fflush(stdout);
                 scanf("%d", &n);
-                if (n < 0) printf("Erreur : Entrez un nombre positif.\n");
-                else printf("\x1B[32mRésultat : %d! = %d\x1B[0m\n", n, factorielle(n));
+                printf("Résultat : %d\n", factorielle(n));
                 break;
             }
-
             case 7: {
                 struct liste_couleurs l;
                 init_liste(&l);
-                printf("\n--- LISTE CHAÎNÉE ---\n");
-                printf("Génération de 10 couleurs test...\n");
-                for (int i = 0; i < 10; i++) {
-                    struct couleur c = {(i*20), (i*10), (255-i*10), 255};
+                for(int i=0; i<5; i++) {
+                    struct couleur c = {rand()%255, rand()%255, rand()%255, 255};
                     insertion(&c, &l);
                 }
                 parcours(&l);
                 break;
             }
-
-            default:
-                printf("\x1B[31mOption invalide !\x1B[0m\n");
         }
-        printf("\n\x1B[30;1mAppuyez sur ENTRÉE pour continuer...\x1B[0m");
+        printf("\n\x1B[30;1mAppuyez sur Entrée pour revenir au menu...\x1B[0m");
+        fflush(stdout);
         getchar(); getchar(); 
     }
     return 0;
