@@ -26,6 +26,7 @@ int main() {
 
     printf("La somme finale est : %d\n", somme);
 
-    return 0;
+    return 0; 
 }
+#
 
