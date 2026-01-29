@@ -3,13 +3,20 @@
 #include "operator.h"
 #include "fichier.h"
 
+void afficher_titre(char *titre) {
+    printf("\n==========================================\n");
+    printf("   %s\n", titre);
+    printf("==========================================\n");
+}
+
 void exercice_4_1() {
     int n1, n2, res;
     char op;
-    printf("\n--- Calcul avec operateurs ---\n");
-    printf("Entrez num1 : "); fflush(stdout); scanf("%d", &n1);
-    printf("Entrez num2 : "); fflush(stdout); scanf("%d", &n2);
-    printf("Entrez l'operateur (+, -, *, /, %%, &, |, ~) : "); fflush(stdout);
+    afficher_titre("EXO 4.1 : CALCULATRICE DYNAMIQUE");
+
+    printf(" > Entrez num1 : "); fflush(stdout); scanf("%d", &n1);
+    printf(" > Entrez num2 : "); fflush(stdout); scanf("%d", &n2);
+    printf(" > Operateur (+, -, *, /, %%, &, |, ~) : "); fflush(stdout);
     scanf(" %c", &op);
 
     switch (op) {
@@ -21,31 +28,52 @@ void exercice_4_1() {
         case '&': res = et_bit(n1, n2); break;
         case '|': res = ou_bit(n1, n2); break;
         case '~': res = negation_bit(n1); break;
-        default: printf("Erreur operateur\n"); return;
+        default: printf("\n [!] Erreur : Operateur inconnu.\n"); return;
     }
-    printf("Resultat : %d\n", res);
+    printf("\n [RESULTAT] : %d %c %d = %d\n", n1, op, n2, res);
 }
 
 void exercice_4_2() {
     int choix;
     char nom[50], msg[100];
-    printf("\n1. Lire\n2. Ecrire\nVotre choix : "); fflush(stdout);
+    afficher_titre("EXO 4.2 : GESTION DE FICHIERS");
+
+    printf(" 1. [LIRE] un fichier existant\n");
+    printf(" 2. [ECRIRE] dans un nouveau fichier\n");
+    printf(" > Votre choix : "); fflush(stdout);
     scanf("%d", &choix);
+
     if (choix == 1) {
-        printf("Nom du fichier : "); fflush(stdout); scanf("%s", nom);
+        printf(" > Nom du fichier a lire : "); fflush(stdout);
+        scanf("%s", nom);
+        printf("\n--- DEBUT DU CONTENU ---\n");
         lire_fichier(nom);
+        printf("--- FIN DU CONTENU ---\n");
     } else {
-        printf("Nom du fichier : "); fflush(stdout); scanf("%s", nom);
-        printf("Message : "); fflush(stdout); getchar(); fgets(msg, 100, stdin);
+        printf(" > Nom du fichier a creer : "); fflush(stdout);
+        scanf("%s", nom);
+        printf(" > Message a enregistrer : "); fflush(stdout);
+        getchar(); // Nettoie le buffer
+        fgets(msg, 100, stdin);
         ecrire_dans_fichier(nom, msg);
     }
 }
 
 int main() {
     int choix;
-    printf("Choisir exercice (1: Calcul, 2: Fichier) : "); fflush(stdout);
-    scanf("%d", &choix);
-    if (choix == 1) exercice_4_1();
-    else if (choix == 2) exercice_4_2();
+    system("clear"); // Nettoie l'écran au lancement
+    afficher_titre("MENU PRINCIPAL - TP4 PROGC");
+    
+    printf("  [1] Lancer la Calculatrice\n");
+    printf("  [2] Lancer la Gestion de Fichiers\n");
+    printf("  [0] Quitter le programme\n");
+    printf("\n > Selection : "); fflush(stdout);
+    
+    if (scanf("%d", &choix) == 1 && choix != 0) {
+        if (choix == 1) exercice_4_1();
+        else if (choix == 2) exercice_4_2();
+    } else {
+        printf("\n Au revoir !\n");
+    }
     return 0;
 }
