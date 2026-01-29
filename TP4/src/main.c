@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "operator.h"
-#include "fichier.h" // Inclusion du nouvel en tête.
+#include "fichier.h" // Inclusion du nouvel en tête
 
 void exercice_4_2() {
     int choix;
