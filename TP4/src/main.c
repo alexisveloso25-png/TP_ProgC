@@ -8,18 +8,20 @@ void exercice_4_1() {
     
     printf("\n--- Exercice 4.1 : Calcul avec operateurs ---\n");
     
-    // Affichage AVANT la saisie pour guider Alexis, Salmane, Kais et Mohamed
+    // 1. Affiche le message PUIS attend le premier nombre
     printf("Entrez num1 : ");
     fflush(stdout); 
     scanf("%d", &n1);
     
+    // 2. Affiche le message PUIS attend le deuxieme nombre
     printf("Entrez num2 : ");
     fflush(stdout);
     scanf("%d", &n2);
     
+    // 3. Affiche le message PUIS attend le symbole
     printf("Entrez l'operateur (+, -, *, /, %%, &, |, ~) : ");
     fflush(stdout);
-    scanf(" %c", &op); // L'espace avant %c est vital pour eviter de sauter l'entree
+    scanf(" %c", &op); // L'espace avant %c est OBLIGATOIRE
 
     switch (op) {
         case '+': res = somme(n1, n2); break;
@@ -30,22 +32,25 @@ void exercice_4_1() {
         case '&': res = et_bit(n1, n2); break;
         case '|': res = ou_bit(n1, n2); break;
         case '~': res = negation_bit(n1); break;
-        default: printf("Erreur : Operateur non reconnu.\n"); return;
+        default: printf("Erreur : symbole invalide.\n"); return;
     }
 
+    // Affiche enfin le résultat sur une nouvelle ligne
     printf("Resultat : %d\n", res);
 }
 
 int main() {
     int choix;
-    printf("Choisissez l'exercice (1 pour la calculatrice) : ");
-    scanf("%d", &choix);
+    // Ici aussi, on affiche d'abord la question
+    printf("Quel exercice souhaitez-vous resoudre ?\n");
+    printf("1. Exercice 4.1 (Calculatrice)\n");
+    printf("Votre choix : ");
+    fflush(stdout);
 
-    if (choix == 1) {
+    if (scanf("%d", &choix) == 1 && choix == 1) {
         exercice_4_1();
     } else {
         printf("Exercice non implemente.\n");
     }
-
     return 0;
 }
