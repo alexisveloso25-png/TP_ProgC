@@ -1,13 +1,31 @@
 #include <stdio.h>
 #include <string.h>
+#include "fichier.h"
 
-typedef struct { char n[50], p[50]; int n1, n2; } Etudiant;
+typedef struct {
+    char nom[50], prenom[50], adresse[100];
+    int note1, note2;
+} Etudiant;
 
 void exercice_4_3() {
-    printf("\n--- GESTION ETUDIANTS (4.3) ---\n");
-    Etudiant e;
-    printf("Nom : "); scanf("%s", e.n);
-    printf("Note 1 : "); scanf("%d", &e.n1);
-    // Logique de sauvegarde...
-    printf("Etudiant %s enregistre.\n", e.n);
+    Etudiant promo[5];
+    char buffer[400];
+    
+    printf("\n--- SAISIE DE 5 ETUDIANTS ---\n");
+    for (int i = 0; i < 5; i++) {
+        printf("\nEtudiant %d :\n", i + 1);
+        printf("Nom : "); scanf("%s", promo[i].nom);
+        printf("Prenom : "); scanf("%s", promo[i].prenom);
+        printf("Adresse : "); getchar(); // vider buffer
+        fgets(promo[i].adresse, 100, stdin);
+        promo[i].adresse[strcspn(promo[i].adresse, "\n")] = 0;
+        printf("Note 1 : "); scanf("%d", &promo[i].note1);
+        printf("Note 2 : "); scanf("%d", &promo[i].note2);
+
+        sprintf(buffer, "Nom: %s | Prenom: %s | Adresse: %s | Notes: %d, %d\n", 
+                promo[i].nom, promo[i].prenom, promo[i].adresse, promo[i].note1, promo[i].note2);
+        
+        ecrire_dans_fichier("etudiant.txt", buffer);
+    }
+    printf("\n[OK] Enregistre dans etudiant.txt\n");
 }
