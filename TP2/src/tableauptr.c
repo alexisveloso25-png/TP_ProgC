@@ -1,43 +1,53 @@
 #include <stdio.h>
+#include <stdlib.h> // Pour rand() et srand()
+#include <time.h>   // Pour time()
 
 int main() {
-    // 1. Déclaration des variables de base
-    char c = 'A';
-    short s = 10;
-    int i = 100;
-    long int li = 1000;
-    long long int lli = 10000;
-    float f = 2.0f;
-    double d = 4.0;
-    long double ld = 8.0L;
+    int taille = 11;
+    int t_int[11];
+    float t_float[11];
 
-    // 2. Déclaration des pointeurs
-    char *p_c = &c;
-    short *p_s = &s;
-    int *p_i = &i;
-    long int *p_li = &li;
-    long long int *p_lli = &lli;
-    float *p_f = &f;
-    double *p_d = &d;
-    long double *p_ld = &ld;
+    // Initialisation du générateur de nombres aléatoires
+    srand(time(NULL));
 
-    printf("--- Avant la manipulation ---\n");
-    // Affichage des adresses (%p) et des valeurs en hexadécimal (%x)
-    printf("Adresse de c : %p, Valeur de c (hex) : %x\n", (void*)p_c, c);
-    printf("Adresse de i : %p, Valeur de i (hex) : %x\n", (void*)p_i, i);
-    // Pour les flottants, on interprète leur adresse comme un pointeur d'entier pour voir l'hexadécimal réel
-    printf("Adresse de f : %p, Valeur de f (hex) : %x\n", (void*)p_f, *(unsigned int*)&f);
+    // 1. Remplissage des tableaux avec des pointeurs
+    for (int i = 0; i < taille; i++) {
+        *(t_int + i) = rand() % 100;           // Entiers entre 0 et 99
+        *(t_float + i) = (float)rand() / RAND_MAX * 10.0; // Flottants entre 0 et 10
+    }
+
+    // --- AFFICHAGE AVANT ---
+    printf("Tableau d'entiers (avant) :\n");
+    for (int i = 0; i < taille; i++) {
+        printf("%d%s", *(t_int + i), (i == taille - 1) ? "" : ", ");
+    }
+
+    printf("\n\nTableau de flottants (avant) :\n");
+    for (int i = 0; i < taille; i++) {
+        printf("%.2f%s", *(t_float + i), (i == taille - 1) ? "" : ", ");
+    }
+
+    // 2. Multiplication par 3 si l'indice est divisible par 2
+    // On utilise l'arithmétique des pointeurs sans aucune notation []
+    for (int i = 0; i < taille; i++) {
+        if (i % 2 == 0) {
+            *(t_int + i) *= 3;
+            *(t_float + i) *= 3.0;
+        }
+    }
+
+    // --- AFFICHAGE APRES ---
+    printf("\n\n--------------------------------------------\n");
+    printf("Tableau d'entiers (apres multiplication par 3 sur indices pairs) :\n");
+    for (int i = 0; i < taille; i++) {
+        printf("%d%s", *(t_int + i), (i == taille - 1) ? "" : ", ");
+    }
+
+    printf("\n\nTableau de flottants (apres multiplication par 3 sur indices pairs) :\n");
+    for (int i = 0; i < taille; i++) {
+        printf("%.2f%s", *(t_float + i), (i == taille - 1) ? "" : ", ");
+    }
     printf("\n");
-
-    // 3. Manipulation via les pointeurs (Accès indirect)
-    *p_c = 'B';           // Modifie c via p_c
-    *p_i = 0xABCDE;       // Modifie i via p_i
-    *p_f = 1.0f;          // Modifie f via p_f (1.0f en IEEE 754 est 0x3f800000)
-
-    printf("--- Apres la manipulation ---\n");
-    printf("Adresse de c : %p, Valeur de c (hex) : %x\n", (void*)p_c, c);
-    printf("Adresse de i : %p, Valeur de i (hex) : %x\n", (void*)p_i, i);
-    printf("Adresse de f : %p, Valeur de f (hex) : %x\n", (void*)p_f, *(unsigned int*)&f);
 
     return 0;
 }
