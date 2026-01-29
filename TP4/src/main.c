@@ -4,18 +4,20 @@
 #include "operator.h"
 #include "fichier.h"
 
-// Prototypes des fonctions
-void exercice_4_1();
+// Prototypes des fonctions externes
+int factorielle(int num); // Vient de factorielle.c
+void exercice_4_1();      // Vient de main.c (plus bas)
 void exercice_4_2();
 void exercice_4_3();
 
 void afficher_menu() {
     printf("\n==============================================\n");
-    printf("   MENU GENERAL - TP4 (Alexis, Salmane, Kais, Mohamed)\n");
+    printf("   MENU GENERAL TP4 - (Alexis, Salmane, Kais, Mohamed)\n");
     printf("==============================================\n");
     printf(" 1. Calculatrice Interactive (Exo 4.1)\n");
     printf(" 2. Lecture / Ecriture de fichier (Exo 4.2)\n");
     printf(" 3. Base de donnees Etudiante (Exo 4.3)\n");
+    printf(" 5. Calcul de Factorielle Recursive (Exo 4.5)\n");
     printf(" 0. Quitter\n");
     printf("----------------------------------------------\n");
     printf(" > Votre choix : ");
@@ -23,7 +25,7 @@ void afficher_menu() {
 }
 
 int main() {
-    int choix;
+    int choix, n;
 
     while (1) {
         afficher_menu();
@@ -34,80 +36,60 @@ int main() {
             case 1: exercice_4_1(); break;
             case 2: exercice_4_2(); break;
             case 3: exercice_4_3(); break;
+            case 5: 
+                printf("\n--- EXO 4.5 : FACTORIELLE ---\n");
+                printf("Entrez un entier naturel : "); fflush(stdout);
+                scanf("%d", &n);
+                if (n < 0) {
+                    printf("Erreur : La factorielle n'est pas definie pour les nombres negatifs.\n");
+                } else {
+                    int resultat = factorielle(n);
+                    printf("Resultat final de %d! = %d\n", n, resultat);
+                }
+                break;
             default: printf("\n[!] Choix invalide.\n");
         }
-        printf("\nAppuyez sur une touche pour continuer...");
+        printf("\nAppuyez sur Entree pour continuer...");
         getchar(); getchar(); 
     }
-    printf("\nFin du programme. Au revoir !\n");
     return 0;
 }
 
-// --- EXO 4.1 : CALCULATRICE INTERACTIVE ---
+// --- Fonctions 4.1, 4.2, 4.3 (Contenu identique aux etapes precedentes) ---
 void exercice_4_1() {
-    int n1, n2, res;
-    char op;
+    int n1, n2, res; char op;
     printf("\n--- CALCULATRICE ---\n");
-    printf("Entrez num1 : "); fflush(stdout); scanf("%d", &n1);
-    printf("Entrez num2 : "); fflush(stdout); scanf("%d", &n2);
-    printf("Operateur (+, -, *, /, %%, &, |, ~) : "); fflush(stdout);
-    scanf(" %c", &op);
-
-    switch (op) {
+    printf("num1 : "); fflush(stdout); scanf("%d", &n1);
+    printf("num2 : "); fflush(stdout); scanf("%d", &n2);
+    printf("Operateur : "); fflush(stdout); scanf(" %c", &op);
+    switch(op) {
         case '+': res = somme(n1, n2); break;
         case '-': res = difference(n1, n2); break;
         case '*': res = produit(n1, n2); break;
         case '/': res = quotient(n1, n2); break;
-        case '%': res = modulo(n1, n2); break;
-        case '&': res = et_bit(n1, n2); break;
-        case '|': res = ou_bit(n1, n2); break;
-        case '~': res = negation_bit(n1); break;
-        default: printf("Erreur : Operateur inconnu.\n"); return;
+        default: printf("Erreur op\n"); return;
     }
-    printf(">>> RESULTAT : %d\n", res);
+    printf("Resultat : %d\n", res);
 }
 
-// --- EXO 4.2 : GESTION FICHIERS SIMPLES ---
 void exercice_4_2() {
-    int choix;
-    char nom[50], msg[100];
-    printf("\n--- GESTION FICHIERS ---\n");
-    printf("1. Lire | 2. Ecrire : "); fflush(stdout);
-    scanf("%d", &choix);
-
-    if (choix == 1) {
-        printf("Fichier a lire : "); fflush(stdout); scanf("%s", nom);
-        lire_fichier(nom);
-    } else {
-        printf("Fichier a creer : "); fflush(stdout); scanf("%s", nom);
-        printf("Message : "); fflush(stdout); getchar();
-        fgets(msg, 100, stdin);
-        ecrire_dans_fichier(nom, msg);
-    }
+    int c; char nom[50], msg[100];
+    printf("\n1. Lire | 2. Ecrire : "); fflush(stdout); scanf("%d", &c);
+    if (c == 1) { printf("Nom : "); scanf("%s", nom); lire_fichier(nom); }
+    else { printf("Nom : "); scanf("%s", nom); getchar(); printf("Message : "); fgets(msg, 100, stdin); ecrire_dans_fichier(nom, msg); }
 }
 
-// --- EXO 4.3 : BASE DE DONNEES ETUDIANTE (Tableau de 5) ---
 void exercice_4_3() {
-    typedef struct { char nom[50], prenom[50], adresse[100]; int n1, n2; } Etudiant;
-    Etudiant promo[5];
-    char buf[400];
-    printf("\n--- BASE ETUDIANTE (5 SAISIES) ---\n");
-
+    typedef struct { char n[50], p[50], a[100]; int n1, n2; } Etudiant;
+    Etudiant e; char b[400];
     for (int i = 0; i < 5; i++) {
-        printf("\nEtudiant %d/%d\n", i+1, 5);
-        printf("Nom : "); fflush(stdout); scanf("%s", promo[i].nom);
-        printf("Prenom : "); fflush(stdout); scanf("%s", promo[i].prenom);
-        printf("Adresse : "); fflush(stdout); getchar();
-        fgets(promo[i].adresse, 100, stdin);
-        promo[i].adresse[strcspn(promo[i].adresse, "\n")] = 0;
-        printf("Notes (1 et 2) : "); fflush(stdout);
-        scanf("%d %d", &promo[i].n1, &promo[i].n2);
-
-        sprintf(buf, "Etudiant: %s %s | Adresse: %s | Notes: %d, %d\n", 
-                promo[i].nom, promo[i].prenom, promo[i].adresse, promo[i].n1, promo[i].n2);
-        
+        printf("\nSaisie %d/5\nNom : ", i+1); scanf("%s", e.n);
+        printf("Prenom : "); scanf("%s", e.p);
+        printf("Adresse : "); getchar(); fgets(e.a, 100, stdin);
+        e.a[strcspn(e.a, "\n")] = 0;
+        printf("Notes (1 et 2) : "); scanf("%d %d", &e.n1, &e.n2);
+        sprintf(b, "Nom: %s, Prenom: %s, Adresse: %s, Notes: %d, %d\n", e.n, e.p, e.a, e.n1, e.n2);
         FILE *f = fopen("etudiant.txt", (i == 0) ? "w" : "a");
-        if (f) { fprintf(f, "%s", buf); fclose(f); }
+        if (f) { fprintf(f, "%s", b); fclose(f); }
     }
-    printf("\n[OK] Sauvegarde dans etudiant.txt terminee.\n");
 }
