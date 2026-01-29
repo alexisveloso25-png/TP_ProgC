@@ -5,108 +5,76 @@
 #include "fichier.h"
 #include "liste.h"
 
-// Prototypes pour le compilateur
+// Prototypes des fonctions externes
 void exercice_4_3();
 int factorielle(int n);
-
-void header() {
-    printf("\033[H\033[J"); // Nettoie l'écran
-    printf("\x1B[36m╔════════════════════════════════════════════╗\n");
-    printf("║       MENU INTERACTIF - TP4 EXPERT         ║\n");
-    printf("╚════════════════════════════════════════════╝\x1B[0m\n");
-}
+void exercice_4_6(char *nom_f);
 
 int main() {
     int choix;
-
     while (1) {
-        header();
-        printf("1. Calculatrice (Somme, Produit, Bits...)\n");
-        printf("2. Gestion de Fichier (Lire ou Écrire)\n");
-        printf("3. Base de données Étudiants (Saisie de 5)\n");
-        printf("5. Calcul de Factorielle (Récursif)\n");
-        printf("7. Liste Chaînée de Couleurs\n");
-        printf("0. Quitter le programme\n");
+        printf("\n\x1B[36m╔════════════════════════════════════════════╗\n");
+        printf("║          CONSOLES   DE  TP4 - COMPLET      ║\n");
+        printf("╚════════════════════════════════════════════╝\x1B[0m\n");
+        printf(" 1. Calculatrice Arithmetique\n 2. Lecture d'un Fichier texte\n 3. Saisie Base Etudiants\n 4. Sauvegarde des Etudiants\n 5. Calcul Factorielle (Recursif)\n 6. Recherche de mots (chercherfichier)\n 7. Liste de Couleurs (Chainee)\n 0. Quitter\n");
         
-        printf("\n\x1B[33mEntrez le numéro de l'exercice à tester : \x1B[0m");
-        fflush(stdout); // FORCE L'AFFICHAGE
+        printf("\n\x1B[33mEntrez le numero de l'exercice (0 a 7) : \x1B[0m");
+        fflush(stdout);
+
         if (scanf("%d", &choix) != 1) break;
         if (choix == 0) break;
 
         switch (choix) {
             case 1: {
-                int n1, n2;
-                char op;
-                printf("\n--- MODE CALCULATRICE ---\n");
-                
-                printf("Entrez le PREMIER numéro : "); 
-                fflush(stdout);
-                scanf("%d", &n1);
-                
-                printf("Entrez le DEUXIÈME numéro : "); 
-                fflush(stdout);
-                scanf("%d", &n2);
-                
-                printf("Choisissez un SYMBOLE (+, -, *, /, %%, &, |) : "); 
-                fflush(stdout);
-                scanf(" %c", &op);
-
-                printf("\n\x1B[32m[RÉSULTAT] : ");
-                if (op == '+') printf("%d + %d = %d", n1, n2, somme(n1, n2));
-                else if (op == '-') printf("%d - %d = %d", n1, n2, difference(n1, n2));
-                else if (op == '*') printf("%d * %d = %d", n1, n2, produit(n1, n2));
-                else if (op == '/') printf("%d / %d = %d", n1, n2, (n2 != 0) ? n1/n2 : 0);
-                else printf("Opération terminée.");
-                printf("\x1B[0m\n");
+                int n1, n2; char op;
+                printf("\n--- CALCULATRICE ---\n");
+                printf("Entrez le numero 1 : "); fflush(stdout); scanf("%d", &n1);
+                printf("Entrez le numero 2 : "); fflush(stdout); scanf("%d", &n2);
+                printf("Entrez le symbole (+, -, *, /) : "); fflush(stdout); scanf(" %c", &op);
+                printf("\x1B[32mResultat : %d %c %d = %d\x1B[0m\n", n1, op, n2, somme(n1, n2));
                 break;
             }
-
             case 2: {
-                int mode;
-                char nomFichier[50], texte[100];
-                printf("\n--- GESTION DE FICHIER ---\n");
-                printf("1. LIRE un fichier\n2. ÉCRIRE dans un fichier\nChoix : ");
-                fflush(stdout);
-                scanf("%d", &mode);
-                printf("Nom du fichier : ");
-                fflush(stdout);
-                scanf("%s", nomFichier);
-
-                if (mode == 1) {
-                    lire_fichier(nomFichier);
-                } else {
-                    printf("Texte à ajouter : ");
-                    fflush(stdout);
-                    getchar(); // Vide le bouton Entrée
-                    fgets(texte, 100, stdin);
-                    ecrire_dans_fichier(nomFichier, texte);
-                }
+                char nf[50];
+                printf("\nTapez le nom du fichier a lire (ex: test.txt) : "); fflush(stdout);
+                scanf("%s", nf);
+                lire_fichier(nf);
                 break;
             }
-
-            case 3: exercice_4_3(); break;
+            case 3:
+            case 4:
+                // L'exercice 3 (structure) et 4 (fichier) se font ensemble
+                exercice_4_3();
+                break;
             case 5: {
-                int n;
-                printf("\nNombre pour factorielle : ");
-                fflush(stdout);
-                scanf("%d", &n);
-                printf("Résultat : %d\n", factorielle(n));
+                int val;
+                printf("\nTapez un nombre pour la factorielle : "); fflush(stdout);
+                scanf("%d", &val);
+                printf("\x1B[32mResultat : %d! = %d\x1B[0m\n", val, factorielle(val));
+                break;
+            }
+            case 6: {
+                char nf[50];
+                printf("\nTapez le nom du fichier ou chercher : "); fflush(stdout);
+                scanf("%s", nf);
+                exercice_4_6(nf);
                 break;
             }
             case 7: {
-                struct liste_couleurs l;
-                init_liste(&l);
-                for(int i=0; i<5; i++) {
-                    struct couleur c = {rand()%255, rand()%255, rand()%255, 255};
-                    insertion(&c, &l);
+                struct liste_couleurs lc;
+                init_liste(&lc);
+                printf("\n--- GENERATION DE COULEURS ---\n");
+                for(int i=0; i<3; i++) {
+                    struct couleur c = {rand()%256, rand()%256, rand()%256, 255};
+                    insertion(&c, &lc);
                 }
-                parcours(&l);
+                parcours(&lc);
                 break;
             }
+            default: printf("Choix invalide.\n");
         }
-        printf("\n\x1B[30;1mAppuyez sur Entrée pour revenir au menu...\x1B[0m");
-        fflush(stdout);
-        getchar(); getchar(); 
+        printf("\nAppuyez sur une touche pour continuer...");
+        fflush(stdout); getchar(); getchar();
     }
     return 0;
 }
