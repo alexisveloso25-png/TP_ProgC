@@ -2,21 +2,24 @@
 #include <string.h>
 #include "fichier.h"
 
-typedef struct {
-    char nom[50], prenom[50], adresse[100];
-    int note1, note2;
-} Etudiant;
+typedef struct { char nom[50], pre[50], adr[100]; int n1, n2; } Etudiant;
 
 void exercice_4_3() {
-    Etudiant p[5];
-    char buf[400];
-    printf("\n--- SAISIE 5 ETUDIANTS ---\n");
-    for (int i = 0; i < 5; i++) {
-        printf("\nEtudiant %d - Nom : ", i + 1); scanf("%s", p[i].nom);
-        printf("Prenom : "); scanf("%s", p[i].prenom);
-        printf("Note 1 : "); scanf("%d", &p[i].note1);
-        printf("Note 2 : "); scanf("%d", &p[i].note2);
-        sprintf(buf, "Nom: %s | Prenom: %s | Notes: %d, %d\n", p[i].nom, p[i].prenom, p[i].note1, p[i].note2);
+    Etudiant e; char buf[512];
+    printf("\n\x1B[34m╔════════════════════════════════════╗\n");
+    printf("║  SAISIE BASE DE DONNÉES ÉTUDIANTS  ║\n");
+    printf("╚════════════════════════════════════╝\x1B[0m\n");
+    for (int i = 1; i <= 5; i++) {
+        printf("\x1B[33m[Etudiant %d/5]\x1B[0m\n", i);
+        printf(" > Nom: "); scanf("%s", e.nom);
+        printf(" > Prénom: "); scanf("%s", e.pre);
+        printf(" > Adresse: "); getchar(); fgets(e.adr, 100, stdin);
+        e.adr[strcspn(e.adr, "\n")] = 0;
+        printf(" > Notes (Ex1 Ex2): "); scanf("%d %d", &e.n1, &e.n2);
+        
+        sprintf(buf, "Nom: %s | Prenom: %s | Adresse: %s | Moyenne: %d\n", 
+                e.nom, e.pre, e.adr, (e.n1+e.n2)/2);
         ecrire_dans_fichier("etudiant.txt", buf);
     }
+    printf("\x1B[32m✔ Données enregistrées dans 'etudiant.txt'.\x1B[0m\n");
 }
