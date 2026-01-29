@@ -1,28 +1,21 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include "fichier.h"
 
 void lire_fichier(char *nom_de_fichier) {
     FILE *f = fopen(nom_de_fichier, "r");
-    if (f == NULL) {
-        printf("Erreur : Impossible d'ouvrir le fichier %s\n", nom_de_fichier);
+    if (!f) {
+        printf("Erreur : Impossible d'ouvrir %s\n", nom_de_fichier);
         return;
     }
-    printf("Contenu de %s :\n", nom_de_fichier);
     char c;
-    while ((c = fgetc(f)) != EOF) {
-        putchar(c);
-    }
-    printf("\n");
+    while ((c = fgetc(f)) != EOF) putchar(c);
     fclose(f);
 }
 
 void ecrire_dans_fichier(char *nom_de_fichier, char *message) {
-    FILE *f = fopen(nom_de_fichier, "a"); // 'a' pour ajouter sans ecraser
-    if (f == NULL) {
-        printf("Erreur d'ecriture.\n");
-        return;
+    FILE *f = fopen(nom_de_fichier, "a");
+    if (f) {
+        fprintf(f, "%s", message);
+        fclose(f);
     }
-    fprintf(f, "%s", message);
-    fclose(f);
 }
