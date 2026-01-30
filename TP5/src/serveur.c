@@ -204,6 +204,6 @@ int main()
     }
   }
 
-  // Le programme ne devrait jamais atteindre cette ligne dans la boucle infinie
+  // Le programme ne devrait jamais atteindre cette ligne dans la boucle infini
   return 0;
 }
