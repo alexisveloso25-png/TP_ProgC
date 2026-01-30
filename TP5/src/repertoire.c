@@ -1,60 +1,47 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <dirent.h> // Fournit les types DIR et struct dirent
+#include <dirent.h>
 #include "repertoire.h"
 
-// --- IMPLÉMENTATION EXERCICE 5.1 (LISTE SIMPLE) ---
+// --- Exercice 5.1 ---
 void lire_dossier(char *nom_repertoire) {
     struct dirent *entree;
-    DIR *dossier = opendir(nom_repertoire); // Tente d'ouvrir le répertoire
+    DIR *dossier = opendir(nom_repertoire);
 
-    // Gestion d'erreur si le répertoire est invalide ou inaccessible
     if (dossier == NULL) {
-        printf("\x1B[31m[Erreur 5.1]\x1B[0m Impossible d'ouvrir le repertoire : %s\n", nom_repertoire);
+        printf("Erreur : Impossible d'ouvrir %s\n", nom_repertoire);
         return;
     }
 
-    printf("\n--- Contenu simple de : %s ---\n", nom_repertoire);
-    
-    // Boucle de lecture : readdir renvoie NULL quand il n'y a plus rien à lire
+    printf("\n\x1B[36m--- CONTENU SIMPLE DE %s ---\x1B[0m\n", nom_repertoire);
     while ((entree = readdir(dossier)) != NULL) {
-        // Affiche le nom de l'entrée actuelle
-        printf("  [Item] %s\n", entree->d_name);
+        printf("  [+] %s\n", entree->d_name);
     }
-
-    closedir(dossier); // Fermeture du flux répertoire
+    closedir(dossier);
 }
 
-// --- IMPLÉMENTATION EXERCICE 5.2 (LISTE RÉCURSIVE) ---
+// --- Exercice 5.2 ---
 void lire_dossier_recursif(char *nom_repertoire) {
     struct dirent *entree;
-    DIR *dossier = opendir(nom_repertoire); // Ouverture pour chaque niveau de récursion
-    char chemin_complet[1024];
+    DIR *dossier = opendir(nom_repertoire);
+    char chemin[1024];
 
-    if (dossier == NULL) {
-        return; // Sécurité pour les dossiers protégés ou inexistants
-    }
+    if (dossier == NULL) return;
 
     while ((entree = readdir(dossier)) != NULL) {
-        // PROTECTION CONTRE LES BOUCLES INFINIES :
-        // On ignore impérativement "." (soi-même) et ".." (parent)
+        // On ignore . et .. pour éviter de boucler à l'infini
         if (strcmp(entree->d_name, ".") == 0 || strcmp(entree->d_name, "..") == 0) {
             continue;
         }
 
-        // Affichage de l'élément avec son chemin pour plus de clarté
-        printf("\x1B[32m[Recurse]\x1B[0m %s/%s\n", nom_repertoire, entree->d_name);
+        printf("\x1B[32m[Trouve]\x1B[0m %s/%s\n", nom_repertoire, entree->d_name);
 
-        // Vérification du type : si c'est un répertoire (DT_DIR), on descend
+        // Si c'est un dossier, on rentre dedans
         if (entree->d_type == DT_DIR) {
-            // Construction du nouveau chemin pour l'appel suivant
-            snprintf(chemin_complet, sizeof(chemin_complet), "%s/%s", nom_repertoire, entree->d_name);
-            
-            // Appel récursif pour explorer ce sous-dossier
-            lire_dossier_recursif(chemin_complet);
+            snprintf(chemin, sizeof(chemin), "%s/%s", nom_repertoire, entree->d_name);
+            lire_dossier_recursif(chemin);
         }
     }
-
     closedir(dossier);
 }
